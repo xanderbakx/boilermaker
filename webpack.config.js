@@ -1,6 +1,8 @@
+const isDev = process.env.NODE_ENV === 'development';
+
 module.exports = {
-  entry: './app/main',
-  mode: 'development',
+  mode: isDev ? 'development' : 'production',
+  entry: ['@babel/polyfill', './client/index.js'],
   output: {
     path: __dirname,
     filename: './public/bundle.js',
@@ -10,7 +12,7 @@ module.exports = {
     rules: [
       {
         test: /.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         loader: 'babel-loader',
       },
       {

@@ -11,3 +11,6 @@ node_modules
 # Bundle
 bundle.js
 bundle.js.map
+
+# Secrets
+secrets.js

@@ -1,7 +1,3 @@
-const db = require('./database');
-const Example = require('./example');
-
-module.exports = {
-  db,
-  Example,
-};
+const db = require('./db');
+require('./models');
+module.exports = db;
