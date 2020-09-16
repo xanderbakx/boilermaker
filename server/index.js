@@ -7,11 +7,28 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const dbStore = new SequelizeStore({ db });
 const port = process.env.PORT || 3000;
 const passport = require('passport');
+const User = require('./db/models/user');
 const app = express();
 module.exports = app;
 
 // Development Secrets
 if (process.env.NODE_ENV !== 'production') require('../secrets');
+
+passport.serializeUser((user, done) => {
+  try {
+    done(null, user.id);
+  } catch (err) {
+    done(err);
+  }
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    await User.findByPk(id);
+  } catch (err) {
+    done(err);
+  }
+});
 
 const buildApp = () => {
   // Logging middleware
@@ -78,7 +95,7 @@ const syncDb = () => db.sync();
 async function bootApp() {
   try {
     await dbStore.sync();
-    await syncDb;
+    await syncDb();
     await buildApp();
     await listening();
   } catch (error) {
